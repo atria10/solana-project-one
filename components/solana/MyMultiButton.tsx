@@ -12,7 +12,7 @@ const WalletMultiButtonDynamic = dynamic(
 export default function MyMultiButton() {
   return (
     <div className=" relative z-[999]">
-      <WalletMultiButtonDynamic className=" text-sm break-keep  flex items-center justify-center  text-white  py-[18px] px-[36px] rounded-[120px]  w-full" />
+      <WalletMultiButtonDynamic className="text-sm break-keep  flex items-center justify-center  text-white  py-[18px] px-[36px] rounded-[120px]  w-full" />
     </div>
   );
 }

@@ -1,7 +1,11 @@
+"use client";
+import dynamic from "next/dynamic";
 import MyMultiButton from "./solana/MyMultiButton";
-import WalletConnection from "./solana/WalletConnection";
 import Theme from "./Theme";
 
+const BalanceDynamic = dynamic(() => import("@/components/solana/Balance"), {
+  loading: () => <p>Loading...</p>,
+});
 type Props = {};
 
 const Navbar = (props: Props) => {
@@ -74,7 +78,8 @@ const Navbar = (props: Props) => {
         </ul>
       </div>
       <div className="navbar-end gap-4">
-        <WalletConnection />
+        {/* <WalletConnection /> */}
+        <BalanceDynamic />
         <MyMultiButton />
         <Theme />
       </div>

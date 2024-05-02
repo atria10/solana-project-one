@@ -14,7 +14,6 @@ export const WalletContextProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const { networkConfiguration } = useNetworkConfiguration();
-
   const wallets = useMemo(() => [], []);
   const network = networkConfiguration as WalletAdapterNetwork;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
