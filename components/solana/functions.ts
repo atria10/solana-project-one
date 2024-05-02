@@ -1,8 +1,15 @@
 import MY_WALLET from "@/marT1ewGwmvDuaz75Qmwuxc6Smmr8i6fAgEMwTGUyLU.json";
 import {
+  createMint,
+  getOrCreateAssociatedTokenAccount,
+  mintTo,
+  transfer,
+} from "@solana/spl-token";
+import {
   Connection,
   Keypair,
   LAMPORTS_PER_SOL,
+  PublicKey,
   SystemProgram,
   Transaction,
   clusterApiUrl,
@@ -10,7 +17,7 @@ import {
 } from "@solana/web3.js";
 export const getConnection = () => {
   // connection to the devnet
-  let connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  let connection = new Connection(clusterApiUrl("devnet"), "finalized");
   return connection;
 };
 
@@ -75,3 +82,76 @@ export const transferSOL = async (
     console.log(error);
   }
 };
+
+export const initMinterAddress = async () => {
+  const connection = getConnection();
+  const keypair = MY_KEYPAIR;
+
+  const mint = await createMint(
+    connection,
+    keypair,
+    MY_KEYPAIR.publicKey,
+    null,
+    6
+  );
+  console.log(`Mint created: ${mint.toBase58()}`);
+};
+
+export const mintToken = async () => {
+  const connection = getConnection();
+  const keypair = MY_KEYPAIR;
+
+  const minterAddress = new PublicKey(
+    "BDp7h5vhD7j1xHKwU3Cdf2ZPsmfRT8scnN18X6wHH9pb"
+  );
+  const tokenAccount = await getOrCreateAssociatedTokenAccount(
+    connection,
+    keypair,
+    minterAddress,
+    keypair.publicKey
+  );
+
+  await mintTo(
+    connection,
+    keypair,
+    minterAddress,
+    tokenAccount.address,
+    keypair,
+    10 * LAMPORTS_PER_SOL
+  );
+
+  console.log(`Token minted: ${tokenAccount.address.toBase58()}`);
+};
+
+export const transferToken=async()=>{
+  const connection = getConnection();
+  const keypair = MY_KEYPAIR;
+
+
+  const toKeypair = Keypair.generate();
+  const to=toKeypair.publicKey;
+  const minterAddress = new PublicKey(
+    "BDp7h5vhD7j1xHKwU3Cdf2ZPsmfRT8scnN18X6wHH9pb"
+  );
+
+  const fromTokenAddress=await getOrCreateAssociatedTokenAccount(
+    connection,
+    keypair,
+    minterAddress,
+    keypair.publicKey
+  );
+
+  const toTokenAccount = await getOrCreateAssociatedTokenAccount(
+    connection,
+    keypair,
+    minterAddress,
+    to
+  );
+
+  // await transfer(connection,
+  //   keypair,
+  //   fromTokenAddress,
+  //   toTokenAccount,
+
+  // )
+}
