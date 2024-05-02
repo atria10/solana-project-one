@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import ContextProvider from "@/contexts/ContextProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
+        <ContextProvider>
+          <Navbar />
+        </ContextProvider>
         {children}
       </body>
     </html>

@@ -1,3 +1,4 @@
+import MyMultiButton from "./solana/MyMultiButton";
 import WalletConnection from "./solana/WalletConnection";
 import Theme from "./Theme";
 
@@ -5,7 +6,7 @@ type Props = {};
 
 const Navbar = (props: Props) => {
   return (
-    <div className="navbar bg-base-200" >
+    <div className="navbar bg-base-200">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -74,6 +75,7 @@ const Navbar = (props: Props) => {
       </div>
       <div className="navbar-end gap-4">
         <WalletConnection />
+        <MyMultiButton />
         <Theme />
       </div>
     </div>
