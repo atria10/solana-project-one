@@ -2,6 +2,7 @@ import Airdrop from "@/components/solana/Airdrop";
 import MintAddress from "@/components/solana/MintAddress";
 import MintToken from "@/components/solana/MintToken";
 import Transaction from "@/components/solana/Transaction";
+import Transfer from "@/components/solana/Transfer";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Transaction />
       <MintAddress />
       <MintToken />
+      <Transfer />
     </main>
   );
 }

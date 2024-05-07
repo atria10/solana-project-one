@@ -123,18 +123,17 @@ export const mintToken = async () => {
   console.log(`Token minted: ${tokenAccount.address.toBase58()}`);
 };
 
-export const transferToken=async()=>{
+export const transferToken = async () => {
   const connection = getConnection();
   const keypair = MY_KEYPAIR;
 
-
   const toKeypair = Keypair.generate();
-  const to=toKeypair.publicKey;
+  const to = toKeypair.publicKey;
   const minterAddress = new PublicKey(
     "BDp7h5vhD7j1xHKwU3Cdf2ZPsmfRT8scnN18X6wHH9pb"
   );
 
-  const fromTokenAddress=await getOrCreateAssociatedTokenAccount(
+  const fromTokenAddress = await getOrCreateAssociatedTokenAccount(
     connection,
     keypair,
     minterAddress,
@@ -148,10 +147,15 @@ export const transferToken=async()=>{
     to
   );
 
-  // await transfer(connection,
-  //   keypair,
-  //   fromTokenAddress,
-  //   toTokenAccount,
+  const amount = 1 * LAMPORTS_PER_SOL;
+  await transfer(
+    connection,
+    keypair,
+    fromTokenAddress.address,
+    toTokenAccount.address,
+    keypair,
+    amount
+  );
 
-  // )
-}
+  console.log(`Token transferred: ${toTokenAccount.address.toBase58()}`);
+};
