@@ -1,4 +1,5 @@
 import Airdrop from "@/components/solana/Airdrop";
+import UploadImage from "@/components/solana/metaplex/UploadImage";
 import MintAddress from "@/components/solana/MintAddress";
 import MintToken from "@/components/solana/MintToken";
 import Transaction from "@/components/solana/Transaction";
@@ -12,6 +13,7 @@ export default function Home() {
       <MintAddress />
       <MintToken />
       <Transfer />
+      <UploadImage />
     </main>
   );
 }
