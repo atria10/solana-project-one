@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import ReduxProvider from "@/components/ReduxProvider";
 import ContextProvider from "@/contexts/ContextProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -19,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ContextProvider>
-          <Navbar />
-        </ContextProvider>
-        {children}
+        <ReduxProvider>
+          <ContextProvider>
+            <Navbar />
+            {children}
+          </ContextProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

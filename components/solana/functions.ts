@@ -1,4 +1,5 @@
 import MY_WALLET from "@/marT1ewGwmvDuaz75Qmwuxc6Smmr8i6fAgEMwTGUyLU.json";
+import { ResponseOKI } from "@/types/apiResponses";
 import {
   createMint,
   getOrCreateAssociatedTokenAccount,
@@ -28,24 +29,6 @@ export const MY_KEYPAIR = Keypair.fromSecretKey(new Uint8Array(MY_WALLET));
 // sono i decimali del SOL
 // ci sono 1 miliardo di lamports in 1 SOL
 // 1 SOL = 1 miliardo di lamports
-
-// create an AIRDROP -- una ricarica
-export const airdropSOL = async (amount: number) => {
-  const connection = getConnection();
-  const myAddress = MY_KEYPAIR.publicKey;
-  try {
-    // request airdrop
-    const signature = await connection.requestAirdrop(
-      myAddress,
-      amount * LAMPORTS_PER_SOL
-    );
-    console.log(
-      `Success! Check out your TX here: https://explorer.solana.com/tx/${signature}?cluster=devnet`
-    );
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 // create a transaction
 // transfer SOl from un address to another
