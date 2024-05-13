@@ -17,7 +17,7 @@ const config: Config = {
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
   daisyui: {
-    themes: ["wireframe", "lofi", "halloween", "coffee"],
+    themes: ["halloween","wireframe", "lofi",  "coffee"],
   },
 };
 export default config;

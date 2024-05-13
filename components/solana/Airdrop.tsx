@@ -3,6 +3,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
 import SubmitButton from "../SubmitButton";
 import { airdropSOL } from "../airdrop/actions";
+import { formFields } from "../airdrop/formFields";
 
 type Props = {};
 
@@ -22,10 +23,16 @@ const Airdrop = (props: Props) => {
   return (
     <form action={handleClick}>
       <div className="flex gap-4 items-center">
-        <label className="input input-bordered flex items-center gap-2">
-          Amount
-          <input type="number" className="grow" placeholder="1" name="amount" />
-        </label>
+        {formFields.map((field, i) => (
+          <label
+            key={i}
+            className="input input-bordered flex items-center gap-2"
+          >
+            {field.label}
+            <input {...field} className="grow" />
+          </label>
+        ))}
+
         <SubmitButton
           title={"Airdrop SOL"}
           buttonProps={{ disabled: !publicKey }}
