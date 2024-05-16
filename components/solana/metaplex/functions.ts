@@ -4,18 +4,23 @@ import {
   createMetadataAccountV3,
   CreateMetadataAccountV3InstructionAccounts,
   CreateMetadataAccountV3InstructionArgs,
+  createNft,
   DataV2Args,
   MPL_TOKEN_METADATA_PROGRAM_ID,
+  mplTokenMetadata,
 } from "@metaplex-foundation/mpl-token-metadata";
 import {
   createGenericFile,
   createSignerFromKeypair,
+  generateSigner,
+  percentAmount,
   publicKey,
   signerIdentity,
 } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { irysUploader } from "@metaplex-foundation/umi-uploader-irys";
 import {
+  base58,
   publicKey as publicKeySerializer,
   string,
 } from "@metaplex-foundation/umi/serializers";
@@ -43,8 +48,8 @@ export const uploadImage = async () => {
   const [myUri] = await umi.uploader.upload([nft_image]);
 
   console.log(myUri);
+  // myUri= https://ltyo76ilh5fyz7hhqcaobtroz4j4b3muuwkezzu6p43l6yk4nqrq.arweave.net/XPDv-Qs_S4z854CA4M4uzxPA7ZSllEzmnn82v2FcbCM
 };
-
 
 // create NFT
 export const splMetadata = async () => {
@@ -103,4 +108,70 @@ export const splMetadata = async () => {
   console.log(
     `Success! Check out your TX here: https://explorer.solana.com/tx/${signature}?cluster=devnet`
   );
+};
+
+export const nftMetadata = async () => {
+  const umi = createUmi(clusterApiUrl("devnet"), "finalized");
+  let keypair = umi.eddsa.createKeypairFromSecretKey(new Uint8Array(MY_WALLET));
+  const myKeypairSigner = createSignerFromKeypair(umi, keypair);
+
+  umi.use(signerIdentity(myKeypairSigner)).use(irysUploader());
+
+  const metadata = {
+    name: "Leo Messi Mario",
+    symbol: "LM10",
+    description: "My NFT for MasterZ x Solana bootcamp",
+    image:
+      "https://ltyo76ilh5fyz7hhqcaobtroz4j4b3muuwkezzu6p43l6yk4nqrq.arweave.net/XPDv-Qs_S4z854CA4M4uzxPA7ZSllEzmnn82v2FcbCM",
+    attributes: [
+      {
+        trait_type: "Rarity",
+        value: "Common",
+      },
+      {
+        trait_type: "Author",
+        value: "Mario",
+      },
+    ],
+    properties: {
+      files: [
+        {
+          type: "image/jpeg",
+          uri: "https://ltyo76ilh5fyz7hhqcaobtroz4j4b3muuwkezzu6p43l6yk4nqrq.arweave.net/XPDv-Qs_S4z854CA4M4uzxPA7ZSllEzmnn82v2FcbCM",
+        },
+      ],
+    },
+  };
+
+  const nftUri = await umi.uploader.uploadJson(metadata);
+  console.log("Your Uri: ", nftUri);
+  return nftUri;
+};
+
+export const mintNft = async () => {
+  const umi = createUmi(clusterApiUrl("devnet"), "finalized");
+  let keypair = umi.eddsa.createKeypairFromSecretKey(new Uint8Array(MY_WALLET));
+  const myKeypairSigner = createSignerFromKeypair(umi, keypair);
+  umi.use(signerIdentity(myKeypairSigner)).use(mplTokenMetadata());
+
+  const name = "Leo Messi Mario";
+  const uri = await nftMetadata();
+  const mint = generateSigner(umi); // create address totally randomic
+  const sellerFeeBasisPoints = percentAmount(5, 2);
+
+  const tx = createNft(umi, {
+    mint,
+    name,
+    uri,
+    sellerFeeBasisPoints,
+  });
+
+  let result = await tx.sendAndConfirm(umi);
+
+  const signature = base58.deserialize(result.signature);
+
+  console.log(signature);
+  // signature=  TaNmwYfHmpLosc34QvW8qBwMZyP88XU5Yhgsr2x67rVr7y9dnyhdib1w28HP1wJBdcqAqX9zTb1WgWeSkp2YVM4
+
+  // LEO MESSI NFT= https://explorer.solana.com/address/BqtdLoNvPSuBAB7R5K2iLtY23myjS8tsaZKQDu482FNN?cluster=devnet
 };

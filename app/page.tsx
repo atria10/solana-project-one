@@ -1,4 +1,5 @@
 "use client";
+import CreateNft from "@/components/CreateNft";
 import GridCard from "@/components/GridCard";
 import Airdrop from "@/components/solana/Airdrop";
 import UploadImage from "@/components/solana/metaplex/UploadImage";
@@ -18,6 +19,7 @@ export default function Home() {
     <MintToken />,
     <Transfer />,
     <UploadImage />,
+    <CreateNft />,
   ];
   return (
     publicKey && (

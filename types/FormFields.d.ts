@@ -14,3 +14,13 @@ export type NumberInputI = {
   max: number;
   step: number;
 };
+
+export type SelectInputI = {
+  name: string;
+  label: string;
+  type: "select";
+  placeholder: string;
+  min: number;
+  max: number;
+  step: number;
+};
